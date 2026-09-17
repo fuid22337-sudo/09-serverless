@@ -21,6 +21,17 @@ const { neon } = require('@neondatabase/serverless');
 function createPostgresAdapter() {
   const sql = neon(process.env.MI_DATABASE_URL);
 
+  function createPostgresAdapter() {
+  // --- LOGS DE DIAGNÓSTICO (borrar después) ---
+  console.log('MI_DATABASE_URL definida:', !!process.env.MI_DATABASE_URL);
+  console.log('DATABASE_URL definida:', !!process.env.DATABASE_URL);
+  console.log('Claves con URL:', Object.keys(process.env).filter(k => k.includes('URL')));
+  // -------------------------------------------
+
+  const sql = neon(process.env.MI_DATABASE_URL);
+  // ... el resto igual
+}
+
   return {
     async findTasksByUserId(userId) {
       const rows = await sql`
