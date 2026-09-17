@@ -243,3 +243,4 @@ tu propia URL de Vercel antes de correrlas (cada alumno tiene la suya).
    `curl`), contra tu URL real -- no `localhost`.
 5. `REFLEXION.md` con tus respuestas a las 3 preguntas.
 
+
