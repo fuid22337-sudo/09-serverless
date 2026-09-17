@@ -19,7 +19,7 @@
 const { neon } = require('@neondatabase/serverless');
 
 function createPostgresAdapter() {
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = neon(process.env.MI_DATABASE_URL);
 
   return {
     async findTasksByUserId(userId) {
