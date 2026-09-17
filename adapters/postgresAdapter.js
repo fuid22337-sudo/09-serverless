@@ -1,36 +1,12 @@
 // ========== adapters/postgresAdapter.js ==========
-// NUEVO en esta práctica. Nota el paquete: '@neondatabase/serverless',
-// NO 'pg' (el driver normal de Postgres para Node). No es un capricho --
-// 'pg' abre una conexión TCP y la mantiene viva; en un servidor normal
-// (como servicio-tareas en las Prácticas 2-8), eso es exactamente lo que
-// quieres, porque el proceso vive minutos u horas y puede reusar esa
-// conexión miles de veces (por eso usábamos mysql.createPool()).
-//
-// Una función serverless NO tiene ese lujo: puede que ni siquiera exista
-// todavía cuando llega la petición (arranca, responde, y potencialmente
-// se apaga segundos después -- "cold start"). Abrir y cerrar una conexión
-// TCP normal en cada invocación es lento y, con miles de invocaciones
-// simultáneas, satura el límite de conexiones de la base de datos casi
-// de inmediato. El driver de Neon resuelve esto hablando por HTTP en vez
-// de TCP -- cada consulta es, en los hechos, una petición HTTP suelta,
-// exactamente el estilo de comunicación para el que están hechas las
-// funciones serverless.
+// Nota: usamos '@neondatabase/serverless' (no 'pg') porque en un entorno
+// serverless no podemos mantener conexiones TCP persistentes; Neon habla
+// por HTTP, que es exactamente lo que necesitan las funciones efímeras.
 
 const { neon } = require('@neondatabase/serverless');
 
 function createPostgresAdapter() {
-  const sql = neon(process.env.MI_DATABASE_URL);
-
-  function createPostgresAdapter() {
-  // --- LOGS DE DIAGNÓSTICO (borrar después) ---
-  console.log('MI_DATABASE_URL definida:', !!process.env.MI_DATABASE_URL);
-  console.log('DATABASE_URL definida:', !!process.env.DATABASE_URL);
-  console.log('Claves con URL:', Object.keys(process.env).filter(k => k.includes('URL')));
-  // -------------------------------------------
-
-  const sql = neon(process.env.MI_DATABASE_URL);
-  // ... el resto igual
-}
+  const sql = neon(process.env.DATABASE_URL);
 
   return {
     async findTasksByUserId(userId) {
